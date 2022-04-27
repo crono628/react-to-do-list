@@ -1,12 +1,19 @@
 let mockData = [
   {
     name: 'cleaning',
-    todo: ['vacuum', 'windex mirrors'],
+    tasks: [
+      { task: 'vacuum', complete: false },
+      { task: 'windex mirrors', complete: false },
+    ],
     id: 1,
   },
   {
     name: 'bills',
-    todo: ['fart bill', 'ralph bill'],
+    tasks: [
+      { task: 'fart bill', complete: false },
+      { task: 'ralph vet bill', complete: false },
+    ],
+    id: 2,
   },
 ];
 

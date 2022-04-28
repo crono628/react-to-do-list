@@ -1,20 +1,9 @@
 let mockData = [
-  {
-    name: 'cleaning',
-    tasks: [
-      { task: 'vacuum', complete: false },
-      { task: 'windex mirrors', complete: false },
-    ],
-    id: 1,
-  },
-  {
-    name: 'bills',
-    tasks: [
-      { task: 'fart bill', complete: false },
-      { task: 'ralph vet bill', complete: false },
-    ],
-    id: 2,
-  },
+  { task: 'vacuum', complete: false, list: 'cleaning' },
+  { task: 'windex', complete: false, list: 'cleaning' },
+  { task: 'dishes', complete: false, list: 'cleaning' },
+  { task: 'fart bill', complete: false, list: 'bills' },
+  { task: 'ralph bill', complete: false, list: 'bills' },
 ];
 
 export default mockData;

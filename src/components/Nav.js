@@ -5,8 +5,12 @@ const Nav = ({ onAddList, onAddTask }) => {
     <nav>
       <div className="nav-left">To Do</div>
       <div className="nav-right">
-        <div onClick={onAddList}>Add List</div>
-        <div onClick={onAddTask}>Add Task</div>
+        <div id="list" onClick={onAddList}>
+          Add List
+        </div>
+        <div id="task" onClick={onAddTask}>
+          Add Task
+        </div>
       </div>
     </nav>
   );

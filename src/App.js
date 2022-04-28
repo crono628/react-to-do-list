@@ -15,6 +15,7 @@ const App = () => {
 
   useEffect(() => {
     if (current.length > 0) {
+      //re-renders all tasks because toDo prop for <Display/> is a variable
       let inListNow = current.find((item) => item.list).list;
       setCurrent(tasks.filter((item) => item.list === inListNow));
       reduceListNames(tasks);
@@ -22,6 +23,7 @@ const App = () => {
     reduceListNames(tasks);
   }, [tasks]);
 
+  // returns tallied names of task lists as an object
   const reduceListNames = (obj) => {
     let reducer = obj.reduce((a, b) => {
       if (!a[b.list]) {
@@ -34,6 +36,7 @@ const App = () => {
   };
 
   const handleListSelection = (e) => {
+    // returns objects that match the list clicked
     let selectedList = tasks.filter(
       (item) => item.list === e.target.textContent
     );
@@ -46,14 +49,7 @@ const App = () => {
   };
 
   const handleSubmitList = () => {
-    // console.log();
-    // setTasks(
-    //   tasks.concat({
-    //     task: input,
-    //     complete: false,
-    //     list: current.find((item) => item.list).list,
-    //   })
-    // );
+    setLists(lists.concat(input));
     setPopup(!popup);
     setInput('');
   };

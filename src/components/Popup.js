@@ -6,10 +6,10 @@ const Popup = ({ name, onChange, onClick, onSubmit, value }) => {
       <div className="modal-content">
         <div>New {name}:</div>
         <input onChange={onChange} value={value} />
-        <div>
-          <button onClick={onSubmit}>Submit</button>
+        <form onSubmit={onSubmit}>
+          <button type="submit">Submit</button>
           <button onClick={onClick}>Cancel</button>
-        </div>
+        </form>
       </div>
     </div>
   );

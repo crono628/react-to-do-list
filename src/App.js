@@ -4,6 +4,7 @@ import Nav from './components/Nav';
 import Sidebar from './components/Sidebar';
 import mockData from './components/testing/mockData.js';
 import Popup from './components/Popup';
+import ListFirst from './components/ListFirst';
 
 const App = () => {
   const [tasks, setTasks] = useState([...mockData]);
@@ -36,7 +37,7 @@ const App = () => {
   };
 
   const handleListSelection = (e) => {
-    // returns objects that match the list clicked
+    // filters objects that match the list clicked
     let selectedList = tasks.filter(
       (item) => item.list === e.target.textContent
     );
@@ -49,6 +50,12 @@ const App = () => {
   };
 
   const handleSubmitList = () => {
+    let newEntry = tasks.concat({
+      task: 'Enter tasks for new list',
+      complete: false,
+      list: input,
+    });
+    setTasks(newEntry);
     setLists(lists.concat(input));
     setPopup(!popup);
     setInput('');
@@ -72,9 +79,28 @@ const App = () => {
     setInput(e.target.value);
   };
 
+  const handleDelete = (e) => {
+    //gets parentElement of the parentElement of the click target and
+    //removes button textContent so only the list item text remains (newStr)
+    let copy = [...tasks];
+    let up = e.target.parentElement;
+    let nextUp = up.parentElement;
+    let newStr = nextUp.textContent.replace(/(EditDelete)/, '');
+    let index = copy.findIndex((obj) => obj.task === newStr);
+    copy[index].complete = true;
+    let finalCopy = copy.filter((item) => item.complete === false);
+    setTasks(finalCopy);
+  };
+
+  const handleEdit = () => {
+    console.log('click!');
+  };
+
   return (
     <div className="app">
-      {popup ? (
+      {modal === 'task' && current.length < 1 && popup ? (
+        <ListFirst onClick={() => setPopup(!popup)} />
+      ) : popup ? (
         <Popup
           value={input}
           onClick={() => setPopup(!popup)}
@@ -90,7 +116,7 @@ const App = () => {
           lists={lists}
           onListClick={handleListSelection}
         />
-        <Display toDo={current} />
+        <Display toDo={current} onDelete={handleDelete} onEdit={handleEdit} />
       </div>
     </div>
   );

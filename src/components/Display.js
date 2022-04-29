@@ -10,7 +10,6 @@ const Display = ({ toDo, onDelete, onEdit }) => {
   }, [toDo]);
 
   const handleClick = (i) => {
-    console.log(toggle);
     let copy = [...toggle];
     copy[i] = !copy[i];
     setToggle(copy);
@@ -19,11 +18,12 @@ const Display = ({ toDo, onDelete, onEdit }) => {
   const renderList = toDo.map((item, index) => (
     <div onClick={() => handleClick(index)} key={uniqid()}>
       {item.task}
-      {toggle[index]
-        ? <button onClick={onEdit}>Edit</button> && (
-            <button onClick={onDelete}>Delete</button>
-          )
-        : null}
+      {toggle[index] ? (
+        <span>
+          <button onClick={onEdit}>Edit</button>
+          <button onClick={onDelete}>Delete</button>
+        </span>
+      ) : null}
     </div>
   ));
 

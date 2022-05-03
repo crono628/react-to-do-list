@@ -5,16 +5,47 @@ import Sidebar from './components/Sidebar';
 import mockData from './components/testing/mockData.js';
 import Popup from './components/Popup';
 import ListFirst from './components/ListFirst';
+import { db } from './firebase';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { async } from '@firebase/util';
 
 const App = () => {
-  const [tasks, setTasks] = useState([...mockData]);
+  const [tasks, setTasks] = useState([]);
   const [lists, setLists] = useState([]);
   const [current, setCurrent] = useState([]);
   const [input, setInput] = useState('');
   const [popup, setPopup] = useState(false);
   const [modal, setModal] = useState('');
 
+  async function tester(db) {
+    const mock = collection(db, 'mockData');
+    const mockSnap = await getDocs(mock);
+    const mockList = mockSnap.docs.map((doc) => doc.data());
+    return mockList[0].mockData;
+  }
+
   useEffect(() => {
+    // async function tryit() {
+    //   try {
+    //     const docRef = await addDoc(collection(db, 'mockData'), {
+    //       mockData,
+    //     });
+    //     console.log('worked?', docRef.id);
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    // }
+
+    // tryit();
+    if (lists.length < 1) {
+      async function stupid() {
+        let list = await tester(db);
+        setTasks(list);
+        console.log(list);
+      }
+      stupid();
+    }
+
     if (current.length > 0) {
       //re-renders all tasks because toDo prop for <Display/> is a variable
       let inListNow = current.find((item) => item.list).list;
@@ -26,6 +57,7 @@ const App = () => {
 
   // returns tallied names of task lists as an object
   const reduceListNames = (obj) => {
+    console.log(obj);
     let reducer = obj.reduce((a, b) => {
       if (!a[b.list]) {
         a[b.list] = 0;
@@ -92,8 +124,18 @@ const App = () => {
     setTasks(finalCopy);
   };
 
-  const handleEdit = () => {
-    console.log('click!');
+  const handleEdit = (e) => {
+    let copy = [...tasks];
+    let up = e.target.parentElement;
+    let nextUp = up.parentElement;
+    let newStr = nextUp.textContent.replace(/(EditDelete)/, '');
+    let index = copy.findIndex((obj) => obj.task === newStr);
+    copy[index].complete = true;
+    let finalCopy = copy.filter((item) => item.complete === false);
+    setTasks(finalCopy);
+    setModal('task');
+    setPopup(!popup);
+    setInput(newStr);
   };
 
   return (
@@ -103,7 +145,10 @@ const App = () => {
       ) : popup ? (
         <Popup
           value={input}
-          onClick={() => setPopup(!popup)}
+          onClick={() => {
+            setInput('');
+            setPopup(!popup);
+          }}
           name={modal}
           onChange={handleInputChange}
           onSubmit={modal === 'list' ? handleSubmitList : handleSubmitTask}

@@ -16,10 +16,14 @@ const Display = ({ toDo, onDelete, onEdit }) => {
   };
 
   const renderList = toDo.map((item, index) => (
-    <div onClick={() => handleClick(index)} key={uniqid()}>
+    <div
+      className="list-item"
+      onClick={() => handleClick(index)}
+      key={uniqid()}
+    >
       {item.task}
       {toggle[index] ? (
-        <span>
+        <span className="button-span">
           <button onClick={onEdit}>Edit</button>
           <button onClick={onDelete}>Delete</button>
         </span>

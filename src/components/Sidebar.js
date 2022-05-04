@@ -1,23 +1,31 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-const Sidebar = ({ lists, onListClick, current }) => {
-  const compareCurrent = current.map((item) => item.list);
+const Sidebar = ({ lists, current, onClick }) => {
+  const [sideLists, setSidelLists] = useState([]);
 
-  const renderLists = lists.map((item, index) => {
-    return (
-      <li
-        className={compareCurrent[0] === item ? 'active' : ''}
-        onClick={onListClick}
-        key={index}
-      >
-        {item}
-      </li>
+  useEffect(() => {
+    const mapList = lists.map((item) => item.list);
+    const filtered = lists.filter(
+      ({ list }, index) => !mapList.includes(list, index + 1)
     );
-  });
+
+    setSidelLists(filtered);
+    console.log('sidebar updated');
+  }, [lists]);
 
   return (
     <div className="sidebar-container">
-      <ul>{renderLists}</ul>
+      <ul>
+        {sideLists.map((item) => (
+          <li
+            onClick={onClick}
+            className={current === item.list ? 'active' : ''}
+            key={item.task}
+          >
+            {item.list}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

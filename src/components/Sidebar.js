@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import uniqid from 'uniqid';
 
-const Sidebar = ({ lists, current, onClick }) => {
-  const [sideLists, setSidelLists] = useState([]);
+const Sidebar = ({ todos, current, onClick }) => {
+  const [lists, setLists] = useState([]);
 
   useEffect(() => {
-    const mapList = lists.map((item) => item.list);
-    const filtered = lists.filter(
+    const mapList = todos.map((item) => item.list);
+    const filtered = todos.filter(
       ({ list }, index) => !mapList.includes(list, index + 1)
     );
-
-    setSidelLists(filtered);
-    console.log('sidebar updated');
-  }, [lists]);
+    setLists(filtered);
+  }, [todos]);
 
   return (
     <div className="sidebar-container">
       <ul>
-        {sideLists.map((item) => (
+        {lists.map((item) => (
           <li
             onClick={onClick}
             className={current === item.list ? 'active' : ''}
-            key={item.task}
+            key={uniqid()}
           >
             {item.list}
           </li>

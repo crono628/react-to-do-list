@@ -2,23 +2,40 @@ import React, { useState } from 'react';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
 
-const Popup = ({ onClick, currentList }) => {
+const Popup = ({ onClick, currentList, choice }) => {
   const [title, setTitle] = useState('');
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (title !== '') {
-      try {
-        await addDoc(collection(db, 'todos'), {
-          title: title,
-          completed: false,
-          list: 'test',
-        });
-      } catch (e) {
-        console.log(e);
+    if (choice === 'task') {
+      if (title !== '') {
+        try {
+          await addDoc(collection(db, 'todos'), {
+            title: title,
+            completed: false,
+            list: currentList,
+          });
+        } catch (e) {
+          console.log(e);
+        }
+        setTitle('');
       }
-
-      setTitle('');
+    } else {
+      if (title !== '') {
+        try {
+          await addDoc(collection(db, 'todos'), {
+            title: null,
+            completed: false,
+            list: title,
+          });
+        } catch (e) {
+          console.log(e);
+        }
+        setTitle('');
+      }
     }
+
+    onClick();
   };
 
   return (
@@ -28,14 +45,16 @@ const Popup = ({ onClick, currentList }) => {
           <input
             type="text"
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter a task"
+            placeholder={`New ${choice}`}
             value={title}
           />
           <div>
-            <button onClick={onClick} type="submit">
+            <button onClick={handleSubmit} type="submit">
               Submit
             </button>
-            <button onClick={onClick}>Cancel</button>
+            <button type="button" onClick={onClick}>
+              Cancel
+            </button>
           </div>
         </form>
       </div>

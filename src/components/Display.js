@@ -1,37 +1,62 @@
 import React, { useState, useEffect } from 'react';
 import uniqid from 'uniqid';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-const Display = ({ toDo, onDelete, onEdit }) => {
-  // const [toggle, setToggle] = useState(Array(toDo.length).fill(false));
+const Display = ({ todos, current, onDelete, onEdit, onComplete }) => {
+  const [title, setTitle] = useState([]);
+  const [edit, setEdit] = useState(null);
 
-  // useEffect(() => {
-  //   //resets the array so any displayed buttons disapper on list/task change
-  //   setToggle(Array(toDo.length).fill(false));
-  // }, [toDo]);
+  useEffect(() => {}, [todos, edit]);
 
-  // const handleClick = (i) => {
-  //   let copy = [...toggle];
-  //   copy[i] = !copy[i];
-  //   setToggle(copy);
+  // const handleChange = (e) => {
+  //   e.preventDefault();
+  //   if (toDo.completed) {
+  //     setTitle(toDo.title);
+  //   } else {
+  //     toDo.title = '';
+  //     setTitle(e.target.value);
+  //   }
   // };
 
-  // const renderList = toDo.map((item, index) => (
-  //   <div
-  //     className="list-item"
-  //     onClick={() => handleClick(index)}
-  //     key={uniqid()}
-  //   >
-  //     {item.task}
-  //     {toggle[index] ? (
-  //       <span className="button-span">
-  //         <button onClick={onEdit}>Edit</button>
-  //         <button onClick={onDelete}>Delete</button>
-  //       </span>
-  //     ) : null}
-  //   </div>
-  // ));
+  const handleEdit = (i) => {
+    if (edit === null) {
+      return setEdit(i);
+    } else {
+      setEdit(null);
+    }
+  };
 
-  return <div className="display"></div>;
+  return (
+    <div className="display">
+      {todos
+        .filter((data) => data.title && data.list === current)
+        .map((item, index) => {
+          return (
+            <div className="list-item" key={uniqid()}>
+              <div
+                className="list-title"
+                style={{ textDecoration: item.completed && 'line-through' }}
+              >
+                {edit === index ? <input /> : item.title}
+              </div>
+              <div className="list-buttons">
+                <button>
+                  <CheckCircleIcon />
+                </button>
+                <button onClick={() => handleEdit(index)}>
+                  <EditIcon />
+                </button>
+                <button>
+                  <DeleteForeverIcon />
+                </button>
+              </div>
+            </div>
+          );
+        })}
+    </div>
+  );
 };
 
 export default Display;

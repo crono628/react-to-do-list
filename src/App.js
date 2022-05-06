@@ -48,7 +48,9 @@ const App = () => {
   }, []);
 
   const handleCurrent = (e) => {
-    setCurrentList(e.target.textContent);
+    let targetList = e.target.textContent;
+    let findList = lists.find((item) => item.list === targetList);
+    setCurrentList(findList);
   };
 
   const handleAddTask = (e) => {
@@ -70,10 +72,19 @@ const App = () => {
     await updateDoc(doc(db, 'todos', todo.id), { title: title });
   };
 
-  const handleDelete = async (id) => {
-    await deleteDoc(doc(db, 'todos', id));
+  const handleDelete = async (todo) => {
+    await deleteDoc(doc(db, 'todos', todo.id));
   };
-
+  /////////////////
+  const handleDeleteList = async (item) => {
+    await todos
+      .filter((thing) => thing.list === currentList.list)
+      .map((todo, i) => {
+        deleteDoc(doc(db, 'list', todo.id));
+        deleteDoc(doc(db, 'todos', todo.id));
+      });
+  };
+  ////////////////
   return (
     <>
       {popup && currentList === '' && modal === 'task' ? (
@@ -87,10 +98,15 @@ const App = () => {
       ) : null}
       <Nav onAddList={handleAddList} onAddTask={handleAddTask} />
       <div className="main">
-        <Sidebar current={currentList} todos={lists} onClick={handleCurrent} />
+        <Sidebar
+          current={currentList}
+          todos={lists}
+          handleDeleteList={handleDeleteList}
+          onClick={handleCurrent}
+        />
         <div className="display">
           {todos
-            .filter((data) => data.list === currentList)
+            .filter((data) => data.list === currentList.list)
             .map((item, index) => {
               return (
                 <Display

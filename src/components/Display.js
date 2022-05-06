@@ -63,7 +63,7 @@ const Display = ({
         >
           <EditIcon />
         </button>
-        <button onClick={() => handleDelete(todo.id)}>
+        <button onClick={() => handleDelete(todo)}>
           <DeleteForeverIcon />
         </button>
       </div>

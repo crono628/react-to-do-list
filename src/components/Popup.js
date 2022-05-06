@@ -13,7 +13,7 @@ const Popup = ({ onClick, currentList, choice }) => {
           await addDoc(collection(db, 'todos'), {
             title: title,
             completed: false,
-            list: currentList,
+            list: currentList.list,
           });
         } catch (e) {
           console.log(e);

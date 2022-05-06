@@ -83,7 +83,6 @@ li {
   width: 100%;
   z-index: 1;
   background-color: rgba(0, 0, 0, 0.45);
-  border: red;
 }
 
 .modal-content {
@@ -104,10 +103,22 @@ li {
   width: 100%;
   max-width: 70vw;
   justify-content: center;
+  margin: 10px;
 }
 
 .list-title {
   flex: 1;
+}
+
+.list-title input {
+  background-color: rgb(91, 215, 224);
+  border: none;
+  font-size: inherit;
+  border-radius: 5px;
+}
+
+.list-title input:focus {
+  outline: none;
 }
 
 .list-buttons {
@@ -120,6 +131,7 @@ li {
   background: none;
   border: none;
   cursor: pointer;
+  margin: 0 5px 0 5px;
 }
 
 .button-span button {
@@ -128,19 +140,4 @@ li {
   border: solid black 1px;
   color: black;
   width: 50px;
-}
-
-.scale-in-center {
-  animation: scale-in-center 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-@keyframes scale-in-center {
-  0% {
-    transform: scale(0);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1);
-    opacity: 1;
-  }
 }

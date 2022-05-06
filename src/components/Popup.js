@@ -23,9 +23,7 @@ const Popup = ({ onClick, currentList, choice }) => {
     } else {
       if (title !== '') {
         try {
-          await addDoc(collection(db, 'todos'), {
-            title: null,
-            completed: false,
+          await addDoc(collection(db, 'lists'), {
             list: title,
           });
         } catch (e) {

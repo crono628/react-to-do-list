@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 import { db } from './firebase';
-import { collection, query, onSnapshot } from 'firebase/firestore';
+import {
+  collection,
+  query,
+  onSnapshot,
+  updateDoc,
+  doc,
+  deleteDoc,
+} from 'firebase/firestore';
 import Popup from './components/Popup';
 import Nav from './components/Nav';
 import Sidebar from './components/Sidebar';
@@ -13,11 +20,11 @@ const App = () => {
   const [currentList, setCurrentList] = useState('');
   const [todos, setTodos] = useState([]);
   const [modal, setModal] = useState('');
-  const [edit, setEdit] = useState(false);
+  const [lists, setLists] = useState([]);
 
   useEffect(() => {
-    const recentQuery = query(collection(db, 'todos'));
-    const unsubscribe = onSnapshot(recentQuery, (snapshot) => {
+    const todosQuery = query(collection(db, 'todos'));
+    const unsubscribeTodos = onSnapshot(todosQuery, (snapshot) => {
       let todosArr = [];
       snapshot.forEach((doc) => {
         todosArr.push({ ...doc.data(), id: doc.id });
@@ -25,7 +32,19 @@ const App = () => {
 
       setTodos(todosArr);
     });
-    return () => unsubscribe();
+    return () => unsubscribeTodos();
+  }, []);
+
+  useEffect(() => {
+    const listsQuery = query(collection(db, 'lists'));
+    const unsubscribeLists = onSnapshot(listsQuery, (snapshot) => {
+      let listsArr = [];
+      snapshot.forEach((doc) => {
+        listsArr.push({ ...doc.data(), id: doc.id });
+      });
+      setLists(listsArr);
+    });
+    return () => unsubscribeLists();
   }, []);
 
   const handleCurrent = (e) => {
@@ -42,8 +61,21 @@ const App = () => {
     setPopup(!popup);
   };
 
+  const handleComplete = async (todo) => {
+    await updateDoc(doc(db, 'todos', todo.id), { completed: !todo.completed });
+  };
+
+  const handleSubmit = async (e, todo, title) => {
+    e.preventDefault();
+    await updateDoc(doc(db, 'todos', todo.id), { title: title });
+  };
+
+  const handleDelete = async (id) => {
+    await deleteDoc(doc(db, 'todos', id));
+  };
+
   return (
-    <div>
+    <>
       {popup && currentList === '' && modal === 'task' ? (
         <ListFirst onClick={() => setPopup(!popup)} />
       ) : popup ? (
@@ -55,10 +87,25 @@ const App = () => {
       ) : null}
       <Nav onAddList={handleAddList} onAddTask={handleAddTask} />
       <div className="main">
-        <Sidebar current={currentList} todos={todos} onClick={handleCurrent} />
-        <Display todos={todos} current={currentList} />
+        <Sidebar current={currentList} todos={lists} onClick={handleCurrent} />
+        <div className="display">
+          {todos
+            .filter((data) => data.list === currentList)
+            .map((item, index) => {
+              return (
+                <Display
+                  handleComplete={handleComplete}
+                  key={item.id}
+                  todo={item}
+                  index={index}
+                  handleSubmit={handleSubmit}
+                  handleDelete={handleDelete}
+                />
+              );
+            })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -75,16 +75,21 @@ const App = () => {
   const handleDelete = async (todo) => {
     await deleteDoc(doc(db, 'todos', todo.id));
   };
-  /////////////////
-  const handleDeleteList = async (item) => {
-    await todos
-      .filter((thing) => thing.list === currentList.list)
-      .map((todo, i) => {
-        deleteDoc(doc(db, 'list', todo.id));
+
+  const handleDeleteList = () => {
+    lists
+      .filter((items) => items.list === currentList.list)
+      .map((list) => {
+        console.log(list);
+        deleteDoc(doc(db, 'lists', list.id));
+      });
+    todos
+      .filter((items) => items.list === currentList.list)
+      .map((todo) => {
         deleteDoc(doc(db, 'todos', todo.id));
       });
   };
-  ////////////////
+
   return (
     <>
       {popup && currentList === '' && modal === 'task' ? (

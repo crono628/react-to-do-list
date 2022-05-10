@@ -14,6 +14,8 @@ import Nav from './components/Nav';
 import Sidebar from './components/Sidebar';
 import Display from './components/Display';
 import ListFirst from './components/ListFirst';
+import Signup from './Signup';
+import { Container } from 'react-bootstrap';
 
 const App = () => {
   const [popup, setPopup] = useState(false);
@@ -91,42 +93,50 @@ const App = () => {
   };
 
   return (
-    <>
-      {popup && currentList === '' && modal === 'task' ? (
-        <ListFirst onClick={() => setPopup(!popup)} />
-      ) : popup ? (
-        <Popup
-          choice={modal}
-          onClick={() => setPopup(!popup)}
-          currentList={currentList}
-        />
-      ) : null}
-      <Nav onAddList={handleAddList} onAddTask={handleAddTask} />
-      <div className="main">
-        <Sidebar
-          current={currentList}
-          todos={lists}
-          handleDeleteList={handleDeleteList}
-          onClick={handleCurrent}
-        />
-        <div className="display">
-          {todos
-            .filter((data) => data.list === currentList.list)
-            .map((item, index) => {
-              return (
-                <Display
-                  handleComplete={handleComplete}
-                  key={item.id}
-                  todo={item}
-                  index={index}
-                  handleSubmit={handleSubmit}
-                  handleDelete={handleDelete}
-                />
-              );
-            })}
-        </div>
+    <Container
+      className="d-flex align-items-center justify-content-center"
+      style={{ minHeight: '100vh' }}
+    >
+      <div className="w-100" style={{ maxWidth: '400px' }}>
+        <Signup />
       </div>
-    </>
+    </Container>
+    // <>
+    //   {popup && currentList === '' && modal === 'task' ? (
+    //     <ListFirst onClick={() => setPopup(!popup)} />
+    //   ) : popup ? (
+    //     <Popup
+    //       choice={modal}
+    //       onClick={() => setPopup(!popup)}
+    //       currentList={currentList}
+    //     />
+    //   ) : null}
+    //   <Nav onAddList={handleAddList} onAddTask={handleAddTask} />
+    //   <div className="main">
+    //     <Sidebar
+    //       current={currentList}
+    //       todos={lists}
+    //       handleDeleteList={handleDeleteList}
+    //       onClick={handleCurrent}
+    //     />
+    //     <div className="display">
+    //       {todos
+    //         .filter((data) => data.list === currentList.list)
+    //         .map((item, index) => {
+    //           return (
+    //             <Display
+    //               handleComplete={handleComplete}
+    //               key={item.id}
+    //               todo={item}
+    //               index={index}
+    //               handleSubmit={handleSubmit}
+    //               handleDelete={handleDelete}
+    //             />
+    //           );
+    //         })}
+    //     </div>
+    //   </div>
+    // </>
   );
 };
 

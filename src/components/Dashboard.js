@@ -89,7 +89,7 @@ const Dashboard = () => {
       });
   };
   return (
-    <>
+    <div>
       {popup && currentList === '' && modal === 'task' ? (
         <ListFirst onClick={() => setPopup(!popup)} />
       ) : popup ? (
@@ -124,7 +124,7 @@ const Dashboard = () => {
             })}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

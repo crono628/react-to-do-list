@@ -1,104 +1,118 @@
 import React, { useState, useEffect } from 'react';
-
-import { db } from './firebase';
-import {
-  collection,
-  query,
-  onSnapshot,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from 'firebase/firestore';
-import Popup from './components/Popup';
-import Nav from './components/Nav';
-import Sidebar from './components/Sidebar';
-import Display from './components/Display';
-import ListFirst from './components/ListFirst';
-import Signup from './Signup';
+// import { db, auth } from './firebase';
+// import {
+//   collection,
+//   query,
+//   onSnapshot,
+//   updateDoc,
+//   doc,
+//   deleteDoc,
+// } from 'firebase/firestore';
+// import Popup from './components/Popup';
+// import Nav from './components/Nav';
+// import Sidebar from './components/Sidebar';
+// import Display from './components/Display';
+// import ListFirst from './components/ListFirst';
+import Signup from './components/Signup';
 import { Container } from 'react-bootstrap';
+import { AuthProvider } from './components/AuthContext';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Login from './components/Login';
+import PrivateRoute from './components/PrivateRoute';
+import Dashboard from './components/Dashboard';
 
 const App = () => {
-  const [popup, setPopup] = useState(false);
-  const [currentList, setCurrentList] = useState('');
-  const [todos, setTodos] = useState([]);
-  const [modal, setModal] = useState('');
-  const [lists, setLists] = useState([]);
+  // const [popup, setPopup] = useState(false);
+  // const [currentList, setCurrentList] = useState('');
+  // const [todos, setTodos] = useState([]);
+  // const [modal, setModal] = useState('');
+  // const [lists, setLists] = useState([]);
 
-  useEffect(() => {
-    const todosQuery = query(collection(db, 'todos'));
-    const unsubscribeTodos = onSnapshot(todosQuery, (snapshot) => {
-      let todosArr = [];
-      snapshot.forEach((doc) => {
-        todosArr.push({ ...doc.data(), id: doc.id });
-      });
+  // useEffect(() => {
+  //   const todosQuery = query(collection(db, 'todos'));
+  //   const unsubscribeTodos = onSnapshot(todosQuery, (snapshot) => {
+  //     let todosArr = [];
+  //     snapshot.forEach((doc) => {
+  //       todosArr.push({ ...doc.data(), id: doc.id });
+  //     });
 
-      setTodos(todosArr);
-    });
-    return () => unsubscribeTodos();
-  }, []);
+  //     setTodos(todosArr);
+  //   });
+  //   return () => unsubscribeTodos();
+  // }, []);
 
-  useEffect(() => {
-    const listsQuery = query(collection(db, 'lists'));
-    const unsubscribeLists = onSnapshot(listsQuery, (snapshot) => {
-      let listsArr = [];
-      snapshot.forEach((doc) => {
-        listsArr.push({ ...doc.data(), id: doc.id });
-      });
-      setLists(listsArr);
-    });
-    return () => unsubscribeLists();
-  }, []);
+  // useEffect(() => {
+  //   const listsQuery = query(collection(db, 'lists'));
+  //   const unsubscribeLists = onSnapshot(listsQuery, (snapshot) => {
+  //     let listsArr = [];
+  //     snapshot.forEach((doc) => {
+  //       listsArr.push({ ...doc.data(), id: doc.id });
+  //     });
+  //     setLists(listsArr);
+  //   });
+  //   return () => unsubscribeLists();
+  // }, []);
 
-  const handleCurrent = (e) => {
-    let targetList = e.target.textContent;
-    let findList = lists.find((item) => item.list === targetList);
-    setCurrentList(findList);
-  };
+  // const handleCurrent = (e) => {
+  //   let targetList = e.target.textContent;
+  //   let findList = lists.find((item) => item.list === targetList);
+  //   setCurrentList(findList);
+  // };
 
-  const handleAddTask = (e) => {
-    setModal(e.target.id);
-    setPopup(!popup);
-  };
+  // const handleAddTask = (e) => {
+  //   setModal(e.target.id);
+  //   setPopup(!popup);
+  // };
 
-  const handleAddList = (e) => {
-    setModal(e.target.id);
-    setPopup(!popup);
-  };
+  // const handleAddList = (e) => {
+  //   setModal(e.target.id);
+  //   setPopup(!popup);
+  // };
 
-  const handleComplete = async (todo) => {
-    await updateDoc(doc(db, 'todos', todo.id), { completed: !todo.completed });
-  };
+  // const handleComplete = async (todo) => {
+  //   await updateDoc(doc(db, 'todos', todo.id), { completed: !todo.completed });
+  // };
 
-  const handleSubmit = async (e, todo, title) => {
-    e.preventDefault();
-    await updateDoc(doc(db, 'todos', todo.id), { title: title });
-  };
+  // const handleSubmit = async (e, todo, title) => {
+  //   e.preventDefault();
+  //   await updateDoc(doc(db, 'todos', todo.id), { title: title });
+  // };
 
-  const handleDelete = async (todo) => {
-    await deleteDoc(doc(db, 'todos', todo.id));
-  };
+  // const handleDelete = async (todo) => {
+  //   await deleteDoc(doc(db, 'todos', todo.id));
+  // };
 
-  const handleDeleteList = () => {
-    lists
-      .filter((items) => items.list === currentList.list)
-      .map((list) => {
-        console.log(list);
-        deleteDoc(doc(db, 'lists', list.id));
-      });
-    todos
-      .filter((items) => items.list === currentList.list)
-      .map((todo) => {
-        deleteDoc(doc(db, 'todos', todo.id));
-      });
-  };
+  // const handleDeleteList = () => {
+  //   lists
+  //     .filter((items) => items.list === currentList.list)
+  //     .map((list) => {
+  //       console.log(list);
+  //       deleteDoc(doc(db, 'lists', list.id));
+  //     });
+  //   todos
+  //     .filter((items) => items.list === currentList.list)
+  //     .map((todo) => {
+  //       deleteDoc(doc(db, 'todos', todo.id));
+  //     });
+  // };
 
   return (
     <Container
       className="d-flex align-items-center justify-content-center"
       style={{ minHeight: '100vh' }}
     >
-      <div className="w-100" style={{ maxWidth: '400px' }}>
-        <Signup />
+      <div className="w-100">
+        <BrowserRouter>
+          <AuthProvider>
+            <Routes>
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+              <Route exact path="/" element={<PrivateRoute />}>
+                <Route exact path="/" element={<Dashboard />} />
+              </Route>
+            </Routes>
+          </AuthProvider>
+        </BrowserRouter>
       </div>
     </Container>
     // <>

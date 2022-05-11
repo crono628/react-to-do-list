@@ -2,7 +2,7 @@ import React from 'react';
 
 const ListFirst = ({ onClick }) => {
   return (
-    <div className="modal">
+    <div className="modal-pop">
       <div onClick={onClick} className="modal-content">
         <div>
           Please select a list first

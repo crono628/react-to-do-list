@@ -37,7 +37,7 @@ const Popup = ({ onClick, currentList, choice }) => {
   };
 
   return (
-    <div className="modal">
+    <div className="modal-pop">
       <div className="modal-content">
         <form onSubmit={handleSubmit}>
           <input

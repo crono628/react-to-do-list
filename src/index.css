@@ -80,7 +80,7 @@ li {
   border-radius: 20px 0 0 20px;
 }
 
-.modal {
+.modal-pop {
   display: flex;
   position: absolute;
   justify-content: center;

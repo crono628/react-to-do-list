@@ -19,9 +19,9 @@ const Nav = ({ onAddList, onAddTask }) => {
   return (
     <nav>
       <div className="nav-left">To Do</div>
-      <div>{currentUser.email}</div>
-      <div>
-        <Button variant="link" onClick={handleLogout}>
+      <div className="d-flex align-items-center me-3">
+        <div className="me-2">{currentUser.email}</div>
+        <Button variant="outline-secondary" size="sm" onClick={handleLogout}>
           Log Out
         </Button>
       </div>

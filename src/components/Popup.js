@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { db } from '../firebase';
-import { collection, addDoc } from 'firebase/firestore';
+import { collection, addDoc, updateDoc, setDoc } from 'firebase/firestore';
+import { useAuth } from './AuthContext';
 
 const Popup = ({ onClick, currentList, choice }) => {
   const [title, setTitle] = useState('');
+  const { currentUser } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (choice === 'task') {
       if (title !== '') {
         try {
-          await addDoc(collection(db, 'todos'), {
+          await addDoc(collection(db, 'users', currentUser.uid, 'todos'), {
             title: title,
             completed: false,
             list: currentList.list,
@@ -23,7 +25,7 @@ const Popup = ({ onClick, currentList, choice }) => {
     } else {
       if (title !== '') {
         try {
-          await addDoc(collection(db, 'lists'), {
+          await addDoc(collection(db, 'users', currentUser.uid, 'lists'), {
             list: title,
           });
         } catch (e) {

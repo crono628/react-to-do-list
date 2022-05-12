@@ -13,6 +13,7 @@ import Nav from '../components/Nav';
 import Sidebar from '../components/Sidebar';
 import Display from '../components/Display';
 import ListFirst from '../components/ListFirst';
+import { useAuth } from './AuthContext';
 
 const Dashboard = () => {
   const [popup, setPopup] = useState(false);
@@ -20,10 +21,24 @@ const Dashboard = () => {
   const [todos, setTodos] = useState([]);
   const [modal, setModal] = useState('');
   const [lists, setLists] = useState([]);
+  const { currentUser } = useAuth();
 
   useEffect(() => {
-    const todosQuery = query(collection(db, 'todos'));
-    const unsubscribeTodos = onSnapshot(todosQuery, (snapshot) => {
+    const listsQuery = query(collection(db, 'users', currentUser.uid, 'lists'));
+    const unsub = onSnapshot(listsQuery, (snapshot) => {
+      let listsArr = [];
+      snapshot.forEach((doc) => {
+        listsArr.push({ ...doc.data(), id: doc.id });
+      });
+
+      setLists(listsArr);
+    });
+    return unsub;
+  }, []);
+
+  useEffect(() => {
+    const todosQuery = query(collection(db, 'users', currentUser.uid, 'todos'));
+    const unsub = onSnapshot(todosQuery, (snapshot) => {
       let todosArr = [];
       snapshot.forEach((doc) => {
         todosArr.push({ ...doc.data(), id: doc.id });
@@ -31,20 +46,20 @@ const Dashboard = () => {
 
       setTodos(todosArr);
     });
-    return () => unsubscribeTodos();
+    return unsub;
   }, []);
 
-  useEffect(() => {
-    const listsQuery = query(collection(db, 'lists'));
-    const unsubscribeLists = onSnapshot(listsQuery, (snapshot) => {
-      let listsArr = [];
-      snapshot.forEach((doc) => {
-        listsArr.push({ ...doc.data(), id: doc.id });
-      });
-      setLists(listsArr);
-    });
-    return () => unsubscribeLists();
-  }, []);
+  // useEffect(() => {
+  //   const listsQuery = query(collection(db, 'lists'));
+  //   const unsubscribeLists = onSnapshot(listsQuery, (snapshot) => {
+  //     let listsArr = [];
+  //     snapshot.forEach((doc) => {
+  //       listsArr.push({ ...doc.data(), id: doc.id });
+  //     });
+  //     setLists(listsArr);
+  //   });
+  //   return () => unsubscribeLists();
+  // }, []);
 
   const handleCurrent = (e) => {
     let targetList = e.target.textContent;

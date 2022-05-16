@@ -4,13 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-const Display = ({
-  todo,
-  handleDelete,
-  handleComplete,
-  handleSubmit,
-  index,
-}) => {
+const Item = ({ todo, handleDelete, handleComplete, handleSubmit, index }) => {
   const [title, setTitle] = useState(todo.title);
   const [edit, setEdit] = useState(null);
 
@@ -70,7 +64,7 @@ const Display = ({
     </div>
   );
 
-  return <>{renderDisplay}</>;
+  return <div>{renderDisplay}</div>;
 };
 
-export default Display;
+export default Item;

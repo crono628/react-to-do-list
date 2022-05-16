@@ -8,12 +8,12 @@ import {
   doc,
   deleteDoc,
 } from 'firebase/firestore';
-import Popup from '../components/Popup';
+import AddList from './AddList';
 import Nav from '../components/Nav';
-import Sidebar from '../components/Sidebar';
-import Display from '../components/Display';
+import Item from './Item';
 import ListFirst from '../components/ListFirst';
 import { useAuth } from './AuthContext';
+import { Stack } from '@mui/material';
 
 const Dashboard = () => {
   const [popup, setPopup] = useState(false);
@@ -68,12 +68,12 @@ const Dashboard = () => {
   };
 
   const handleAddTask = (e) => {
-    setModal(e.target.id);
+    // setModal(e.target.id);
     setPopup(!popup);
   };
 
   const handleAddList = (e) => {
-    setModal(e.target.id);
+    // setModal(e.target.id);
     setPopup(!popup);
   };
 
@@ -105,7 +105,7 @@ const Dashboard = () => {
   };
   return (
     <div>
-      {popup && currentList === '' && modal === 'task' ? (
+      {/* {popup && currentList === '' && modal === 'task' ? (
         <ListFirst onClick={() => setPopup(!popup)} />
       ) : popup ? (
         <Popup
@@ -113,32 +113,24 @@ const Dashboard = () => {
           onClick={() => setPopup(!popup)}
           currentList={currentList}
         />
-      ) : null}
-      <Nav onAddList={handleAddList} onAddTask={handleAddTask} />
-      <div className="main">
-        <Sidebar
-          current={currentList}
-          todos={lists}
-          handleDeleteList={handleDeleteList}
-          onClick={handleCurrent}
-        />
-        <div className="display">
-          {todos
-            .filter((data) => data.list === currentList.list)
-            .map((item, index) => {
-              return (
-                <Display
-                  handleComplete={handleComplete}
-                  key={item.id}
-                  todo={item}
-                  index={index}
-                  handleSubmit={handleSubmit}
-                  handleDelete={handleDelete}
-                />
-              );
-            })}
-        </div>
-      </div>
+      ) : null} */}
+      <Nav onAddList={handleAddList} onAddTask={handleAddTask} lists={lists} />
+      <Stack>
+        {todos
+          .filter((data) => data.list === currentList.list)
+          .map((item, index) => {
+            return (
+              <Item
+                handleComplete={handleComplete}
+                key={item.id}
+                todo={item}
+                index={index}
+                handleSubmit={handleSubmit}
+                handleDelete={handleDelete}
+              />
+            );
+          })}
+      </Stack>
     </div>
   );
 };

@@ -2,10 +2,9 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-html,
+/* html,
 body,
 #root {
   background-color: rgb(91, 215, 224);
@@ -96,7 +95,6 @@ li {
   padding: 25px;
   margin-bottom: 50vh;
   border-radius: 15px;
-  /* position: absolute; */
 }
 
 .modal-content button {
@@ -164,4 +162,4 @@ li {
   cursor: pointer;
   margin: 0 0 30px 20px;
   transform: scale(1.7);
-}
+} */

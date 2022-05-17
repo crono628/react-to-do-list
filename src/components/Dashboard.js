@@ -4,7 +4,6 @@ import {
   collection,
   query,
   onSnapshot,
-  updateDoc,
   doc,
   deleteDoc,
 } from 'firebase/firestore';
@@ -50,17 +49,22 @@ const Dashboard = () => {
   };
 
   const handleDeleteList = () => {
-    lists
-      .filter((items) => items.list === currentList.list)
-      .map((list) => {
-        console.log(list);
-        deleteDoc(doc(db, 'lists', list.id));
-      });
-    todos
-      .filter((items) => items.list === currentList.list)
-      .map((todo) => {
-        deleteDoc(doc(db, 'todos', todo.id));
-      });
+    if (currentList === '') {
+      return;
+    } else {
+      lists
+        .filter((items) => items.list === currentList.list)
+        .map((list) => {
+          console.log(list);
+          deleteDoc(doc(db, 'users', currentUser.uid, 'lists', list.id));
+        });
+      todos
+        .filter((items) => items.list === currentList.list)
+        .map((todo) => {
+          deleteDoc(doc(db, 'users', currentUser.uid, 'todos', todo.id));
+        });
+      setCurrentList('');
+    }
   };
 
   return (
@@ -70,6 +74,7 @@ const Dashboard = () => {
         currentList={handleCurrent}
         getCurrentList={currentList}
         todos={todos}
+        handleDeleteList={handleDeleteList}
       />
     </>
   );

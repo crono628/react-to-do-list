@@ -23,6 +23,7 @@ import { Button } from '@mui/material';
 import AddList from './AddList';
 import AddTask from './AddTask';
 import Item from './Item';
+import ConfirmDelete from './ConfirmDelete';
 
 const drawerWidth = 240;
 
@@ -73,12 +74,10 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 
 export default function PersistentDrawerLeft({
   lists,
-  onAddList,
-  onAddTask,
   currentList,
   getCurrentList,
   todos,
-  handleCompletedTask,
+  handleDeleteList,
 }) {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -146,23 +145,6 @@ export default function PersistentDrawerLeft({
         open={open}
       >
         <DrawerHeader>
-          <Button
-            onClick={handleLogout}
-            variant="outlined"
-            size="small"
-            sx={{
-              borderColor: 'white',
-              color: 'white',
-              '&:hover': {
-                color: 'white',
-                borderColor: 'white',
-                backgroundColor: 'darkRed',
-              },
-            }}
-            endIcon={<LogoutIcon />}
-          >
-            Log Out
-          </Button>
           <IconButton onClick={handleDrawerClose} sx={{ ml: 3 }}>
             {theme.direction === 'ltr' ? (
               <ChevronLeftIcon />
@@ -176,20 +158,18 @@ export default function PersistentDrawerLeft({
           <AddList
             onClick={() => {
               handleDrawerClose();
-              onAddTask();
             }}
           />
           <AddTask
             currentList={getCurrentList}
             onClick={() => {
               handleDrawerClose();
-              onAddList();
             }}
           />
         </List>
 
         <Divider />
-        <List>
+        <List sx={{ flexGrow: 1, overflowY: 'scroll' }}>
           {lists.map((text, index) => (
             <ListItem
               key={text.list}
@@ -203,8 +183,54 @@ export default function PersistentDrawerLeft({
             </ListItem>
           ))}
         </List>
+        <Divider />
+        {/* <Button
+          onClick={handleDeleteList}
+          variant="outlined"
+          size="small"
+          sx={{
+            color: 'darkred',
+            borderColor: 'white',
+            mx: 3,
+            my: 3,
+            '&:hover': {
+              backgroundColor: 'darkred',
+              borderColor: 'darkred',
+              color: 'white',
+            },
+          }}
+        >
+          Delete Current List
+        </Button> */}
+        <ConfirmDelete handleDelete={handleDeleteList} />
+        <Button
+          onClick={handleLogout}
+          variant="outlined"
+          size="small"
+          sx={{
+            mx: 3,
+            mb: 7,
+            borderColor: 'white',
+            color: 'white',
+            '&:hover': {
+              color: 'rgb(91, 215, 224)',
+              borderColor: 'white',
+              backgroundColor: 'white',
+            },
+          }}
+          endIcon={<LogoutIcon />}
+        >
+          Log Out
+        </Button>
       </Drawer>
-      <Main open={open} sx={{ backgroundColor: 'lightgrey', height: '100vh' }}>
+      <Main
+        open={open}
+        sx={{
+          backgroundColor: 'lightgrey',
+          height: '100vh',
+          overflowY: 'scroll',
+        }}
+      >
         <DrawerHeader />
         <>
           {todos
@@ -216,7 +242,6 @@ export default function PersistentDrawerLeft({
                   key={item.id}
                   todo={item}
                   index={index}
-                  handleCompletedTask={handleCompletedTask}
                   // handleSubmit={handleSubmit}
                   // handleDelete={handleDelete}
                 />

@@ -10,17 +10,10 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Box, Container, IconButton, TextField } from '@mui/material';
 
 import { db } from '../firebase';
-import {
-  collection,
-  query,
-  onSnapshot,
-  updateDoc,
-  doc,
-  deleteDoc,
-} from 'firebase/firestore';
+import { updateDoc, doc, deleteDoc } from 'firebase/firestore';
 import { useAuth } from './AuthContext';
 
-export default function Item({ todo }) {
+export default function Item({ todo, list }) {
   const [title, setTitle] = useState(todo.title);
   const [edit, setEdit] = useState(null);
   const { currentUser } = useAuth();
@@ -43,11 +36,6 @@ export default function Item({ todo }) {
   const handleDelete = async (todo) => {
     await deleteDoc(doc(db, 'users', currentUser.uid, 'todos', todo.id));
   };
-
-  // const handleSubmit = async (e, todo, title) => {
-  //   e.preventDefault();
-  //   await updateDoc(doc(db, 'todos', todo.id), { title: title });
-  // };
 
   const renderDisplay = (
     <Accordion>

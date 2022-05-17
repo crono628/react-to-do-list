@@ -16,7 +16,6 @@ import { useAuth } from './AuthContext';
 import { Stack } from '@mui/material';
 
 const Dashboard = () => {
-  const [popup, setPopup] = useState(false);
   const [currentList, setCurrentList] = useState('');
   const [todos, setTodos] = useState([]);
   const [modal, setModal] = useState('');
@@ -67,16 +66,6 @@ const Dashboard = () => {
     setCurrentList(findList);
   };
 
-  const handleAddTask = (e) => {
-    // setModal(e.target.id);
-    setPopup(!popup);
-  };
-
-  const handleAddList = (e) => {
-    // setModal(e.target.id);
-    setPopup(!popup);
-  };
-
   const handleComplete = async (todo) => {
     await updateDoc(doc(db, 'todos', todo.id), { completed: !todo.completed });
   };
@@ -114,7 +103,11 @@ const Dashboard = () => {
           currentList={currentList}
         />
       ) : null} */}
-      <Nav onAddList={handleAddList} onAddTask={handleAddTask} lists={lists} />
+      <Nav
+        lists={lists}
+        currentList={handleCurrent}
+        getCurrentList={currentList}
+      />
       <Stack>
         {todos
           .filter((data) => data.list === currentList.list)

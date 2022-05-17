@@ -23,7 +23,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Container } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import AddList from './AddList';
 import AddTask from './AddTask';
 
@@ -74,7 +74,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export default function PersistentDrawerLeft({ lists, onAddList, onAddTask }) {
+export default function PersistentDrawerLeft({
+  lists,
+  onAddList,
+  onAddTask,
+  currentList,
+  getCurrentList,
+}) {
   const theme = useTheme();
   const navigate = useNavigate();
   const { currentUser, logout } = useAuth();
@@ -115,13 +121,27 @@ export default function PersistentDrawerLeft({ lists, onAddList, onAddTask }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography sx={{ flexGrow: 1 }} variant="h6" noWrap component="div">
             ToDo
           </Typography>
-          <Box sx={{ ml: 2, flexGrow: 1 }}>{currentUser.email}</Box>
-          <IconButton onClick={handleLogout} variant="outlined" size="small">
-            Log Out <LogoutIcon sx={{ ml: 2 }} />
-          </IconButton>
+          <Box sx={{ ml: 2, flexGrow: 1 }}>{getCurrentList.list}</Box>
+          <Button
+            onClick={handleLogout}
+            variant="outlined"
+            size="small"
+            sx={[
+              { color: 'white', borderColor: 'white' },
+              {
+                '&:hover': {
+                  color: 'white',
+                  borderColor: 'white',
+                },
+              },
+            ]}
+            endIcon={<LogoutIcon />}
+          >
+            Log Out
+          </Button>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -148,24 +168,31 @@ export default function PersistentDrawerLeft({ lists, onAddList, onAddTask }) {
           </IconButton>
         </DrawerHeader>
 
-        <AddList
-          onClick={() => {
-            handleDrawerClose();
-            onAddTask();
-          }}
-        />
-
-        <AddTask
-          onClick={() => {
-            handleDrawerClose();
-            onAddList();
-          }}
-        />
+        <List>
+          <AddList
+            onClick={() => {
+              handleDrawerClose();
+              onAddTask();
+            }}
+          />
+          <AddTask
+            currentList={getCurrentList}
+            onClick={() => {
+              handleDrawerClose();
+              onAddList();
+            }}
+          />
+        </List>
 
         <Divider />
         <List>
           {lists.map((text, index) => (
-            <ListItem key={text.list} disablePadding>
+            <ListItem
+              key={text.list}
+              onClick={currentList}
+              // sx={{ '& .active': { backgroundColor: 'rgb(183, 246, 250)' } }}
+              disablePadding
+            >
               <ListItemButton>
                 <ListItemIcon>
                   {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}

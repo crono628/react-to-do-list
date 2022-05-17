@@ -227,7 +227,7 @@ export default function PersistentDrawerLeft({
         open={open}
         sx={{
           backgroundColor: 'lightgrey',
-          height: '100vh',
+          height: '100%',
           overflowY: 'scroll',
         }}
       >

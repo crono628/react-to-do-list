@@ -59,31 +59,53 @@ export default function AddTask({ onClick, currentList, choice }) {
           </ListItemIcon>
         </ListItemButton>
       </ListItem>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Task</DialogTitle>
-        <form onSubmit={handleSubmit}>
+
+      {currentList ? (
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>New Task</DialogTitle>
+          <form onSubmit={handleSubmit}>
+            <DialogContent>
+              {/* <DialogContentText>Name your new list</DialogContentText> */}
+              <TextField
+                autoFocus
+                onChange={(e) => setTitle(e.target.value)}
+                value={title}
+                margin="dense"
+                id="name"
+                label="Task Name"
+                type="text"
+                fullWidth
+                variant="standard"
+              />
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleClose}>Cancel</Button>
+              <Button type="submit" onClick={handleClose}>
+                Add
+              </Button>
+            </DialogActions>
+          </form>
+        </Dialog>
+      ) : (
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{'Choose a List'}</DialogTitle>
           <DialogContent>
-            {/* <DialogContentText>Name your new list</DialogContentText> */}
-            <TextField
-              autoFocus
-              onChange={(e) => setTitle(e.target.value)}
-              value={title}
-              margin="dense"
-              id="name"
-              label="Task Name"
-              type="text"
-              fullWidth
-              variant="standard"
-            />
+            <DialogContentText id="alert-dialog-description">
+              To add a new task, please select a list first.
+            </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose}>Cancel</Button>
-            <Button type="submit" onClick={handleClose}>
-              Add
+            <Button onClick={handleClose} autoFocus>
+              OK
             </Button>
           </DialogActions>
-        </form>
-      </Dialog>
+        </Dialog>
+      )}
     </>
   );
 }

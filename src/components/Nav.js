@@ -14,18 +14,15 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import LogoutIcon from '@mui/icons-material/Logout';
 
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Button, Container } from '@mui/material';
+import { Button } from '@mui/material';
 import AddList from './AddList';
 import AddTask from './AddTask';
+import Item from './Item';
 
 const drawerWidth = 240;
 
@@ -80,6 +77,8 @@ export default function PersistentDrawerLeft({
   onAddTask,
   currentList,
   getCurrentList,
+  todos,
+  handleCompletedTask,
 }) {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -121,27 +120,15 @@ export default function PersistentDrawerLeft({
           >
             <MenuIcon />
           </IconButton>
-          <Typography sx={{ flexGrow: 1 }} variant="h6" noWrap component="div">
+          <Typography
+            sx={{ flexGrow: 0.6 }}
+            variant="h6"
+            noWrap
+            component="div"
+          >
             ToDo
           </Typography>
-          <Box sx={{ ml: 2, flexGrow: 1 }}>{getCurrentList.list}</Box>
-          <Button
-            onClick={handleLogout}
-            variant="outlined"
-            size="small"
-            sx={[
-              { color: 'white', borderColor: 'white' },
-              {
-                '&:hover': {
-                  color: 'white',
-                  borderColor: 'white',
-                },
-              },
-            ]}
-            endIcon={<LogoutIcon />}
-          >
-            Log Out
-          </Button>
+          <Box sx={{ flexGrow: 1 }}>{getCurrentList.list}</Box>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -159,7 +146,24 @@ export default function PersistentDrawerLeft({
         open={open}
       >
         <DrawerHeader>
-          <IconButton onClick={handleDrawerClose}>
+          <Button
+            onClick={handleLogout}
+            variant="outlined"
+            size="small"
+            sx={{
+              borderColor: 'white',
+              color: 'white',
+              '&:hover': {
+                color: 'white',
+                borderColor: 'white',
+                backgroundColor: 'darkRed',
+              },
+            }}
+            endIcon={<LogoutIcon />}
+          >
+            Log Out
+          </Button>
+          <IconButton onClick={handleDrawerClose} sx={{ ml: 3 }}>
             {theme.direction === 'ltr' ? (
               <ChevronLeftIcon />
             ) : (
@@ -194,90 +198,32 @@ export default function PersistentDrawerLeft({
               disablePadding
             >
               <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
                 <ListItemText primary={text.list} />
               </ListItemButton>
             </ListItem>
           ))}
         </List>
       </Drawer>
-      <Main open={open}>
+      <Main open={open} sx={{ backgroundColor: 'lightgrey', height: '100vh' }}>
         <DrawerHeader />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
-          dolor purus non enim praesent elementum facilisis leo vel. Risus at
-          ultrices mi tempus imperdiet. Semper risus in hendrerit gravida rutrum
-          quisque non tellus. Convallis convallis tellus id interdum velit
-          laoreet id donec ultrices. Odio morbi quis commodo odio aenean sed
-          adipiscing. Amet nisl suscipit adipiscing bibendum est ultricies
-          integer quis. Cursus euismod quis viverra nibh cras. Metus vulputate
-          eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo
-          quis imperdiet massa tincidunt. Cras tincidunt lobortis feugiat
-          vivamus at augue. At augue eget arcu dictum varius duis at consectetur
-          lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa sapien
-          faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est
-          ullamcorper eget nulla facilisi etiam dignissim diam. Pulvinar
-          elementum integer enim neque volutpat ac tincidunt. Ornare suspendisse
-          sed nisi lacus sed viverra tellus. Purus sit amet volutpat consequat
-          mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis
-          risus sed vulputate odio. Morbi tincidunt ornare massa eget egestas
-          purus viverra accumsan in. In hendrerit gravida rutrum quisque non
-          tellus orci ac. Pellentesque nec nam aliquam sem et tortor. Habitant
-          morbi tristique senectus et. Adipiscing elit duis tristique
-          sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        <>
+          {todos
+            .filter((data) => data.list === getCurrentList.list)
+            .map((item, index) => {
+              return (
+                <Item
+                  // handleComplete={handleComplete}
+                  key={item.id}
+                  todo={item}
+                  index={index}
+                  handleCompletedTask={handleCompletedTask}
+                  // handleSubmit={handleSubmit}
+                  // handleDelete={handleDelete}
+                />
+              );
+            })}
+        </>
       </Main>
     </Box>
   );
 }
-
-// import React from 'react';
-// import { Button } from 'react-bootstrap';
-// import { useAuth } from './AuthContext';
-// import { useNavigate } from 'react-router-dom';
-
-// const Nav = ({ onAddList, onAddTask }) => {
-//   const { currentUser, logout } = useAuth();
-//   const navigate = useNavigate();
-
-//   const handleLogout = async () => {
-//     try {
-//       await logout();
-//       navigate('/login');
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   return (
-//     <nav>
-//       <div className="nav-left">To Do</div>
-//       <div className="d-flex align-items-center me-3">
-//         <div className="me-2">{currentUser.email}</div>
-//         <Button variant="outline-secondary" size="sm" onClick={handleLogout}>
-//           Log Out
-//         </Button>
-//       </div>
-//       <div className="nav-right">
-//         <div id="list" onClick={onAddList}>
-//           Add List
-//         </div>
-//         <div id="task" onClick={onAddTask}>
-//           Add Task
-//         </div>
-//       </div>
-//     </nav>
-//   );
-// };
-
-// export default Nav;
-
-// // className="w-100 text-center mt-2"

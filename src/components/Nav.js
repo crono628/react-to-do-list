@@ -157,16 +157,16 @@ export default function PersistentDrawerLeft({
         </List>
 
         <Divider />
-        <List sx={{ flexGrow: 1, overflowY: 'scroll' }}>
+        <List sx={{ height: '100%', overflowY: 'scroll' }}>
           {lists.map((text, index) => (
             <ListItem
+              disablePadding
               key={text.list}
               onClick={currentList}
               sx={{
                 backgroundColor:
                   getCurrentList.list === text.list ? 'rgb(183, 246, 250)' : '',
               }}
-              disablePadding
             >
               <ListItemButton>
                 <ListItemText primary={text.list} />
@@ -221,8 +221,6 @@ export default function PersistentDrawerLeft({
                   key={item.id}
                   todo={item}
                   index={index}
-                  // handleSubmit={handleSubmit}
-                  // handleDelete={handleDelete}
                 />
               );
             })}

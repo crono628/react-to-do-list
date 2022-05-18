@@ -69,7 +69,6 @@ export default function AddTask({ currentList, choice }) {
           <DialogTitle>New Task</DialogTitle>
           <form onSubmit={handleSubmit}>
             <DialogContent>
-              {/* <DialogContentText>Name your new list</DialogContentText> */}
               <TextField
                 autoFocus
                 onChange={(e) => setTitle(e.target.value)}

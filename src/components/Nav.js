@@ -19,13 +19,13 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Button } from '@mui/material';
+import { Button, Container } from '@mui/material';
 import AddList from './AddList';
 import AddTask from './AddTask';
 import Item from './Item';
 import ConfirmDelete from './ConfirmDelete';
 
-const drawerWidth = 240;
+const drawerWidth = 180;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
@@ -119,15 +119,9 @@ export default function PersistentDrawerLeft({
           >
             <MenuIcon />
           </IconButton>
-          <Typography
-            sx={{ flexGrow: 0.6 }}
-            variant="h6"
-            noWrap
-            component="div"
-          >
-            ToDo
+          <Typography variant="h6" noWrap component="div" textAlign="center">
+            {!getCurrentList.list ? 'To Do' : getCurrentList.list}
           </Typography>
-          <Box sx={{ flexGrow: 1 }}>{getCurrentList.list}</Box>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -145,6 +139,7 @@ export default function PersistentDrawerLeft({
         open={open}
       >
         <DrawerHeader>
+          <Typography>{currentUser.email}</Typography>
           <IconButton onClick={handleDrawerClose} sx={{ ml: 3 }}>
             {theme.direction === 'ltr' ? (
               <ChevronLeftIcon />
@@ -156,12 +151,6 @@ export default function PersistentDrawerLeft({
 
         <List>
           <AddList
-            onClick={() => {
-              handleDrawerClose();
-            }}
-          />
-          <AddTask
-            currentList={getCurrentList}
             onClick={() => {
               handleDrawerClose();
             }}
@@ -184,24 +173,6 @@ export default function PersistentDrawerLeft({
           ))}
         </List>
         <Divider />
-        {/* <Button
-          onClick={handleDeleteList}
-          variant="outlined"
-          size="small"
-          sx={{
-            color: 'darkred',
-            borderColor: 'white',
-            mx: 3,
-            my: 3,
-            '&:hover': {
-              backgroundColor: 'darkred',
-              borderColor: 'darkred',
-              color: 'white',
-            },
-          }}
-        >
-          Delete Current List
-        </Button> */}
         <ConfirmDelete handleDelete={handleDeleteList} />
         <Button
           onClick={handleLogout}
@@ -231,6 +202,14 @@ export default function PersistentDrawerLeft({
       >
         <DrawerHeader />
         <>
+          <List
+            onClick={() => {
+              handleDrawerClose();
+            }}
+            sx={{ m: 2 }}
+          >
+            <AddTask currentList={getCurrentList ? getCurrentList : ''} />
+          </List>
           {todos
             .filter((data) => data.list === getCurrentList.list)
             .map((item, index) => {

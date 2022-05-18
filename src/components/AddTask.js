@@ -22,7 +22,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 
-export default function AddTask({ onClick, currentList, choice }) {
+export default function AddTask({ currentList, choice }) {
   const [open, setOpen] = React.useState(false);
   const [title, setTitle] = React.useState('');
   const { currentUser } = useAuth();

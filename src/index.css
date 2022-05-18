@@ -4,6 +4,7 @@
   box-sizing: border-box;
 }
 
+#root,
 html {
   background-color: lightgray;
 }

@@ -139,10 +139,9 @@ export default function PersistentDrawerLeft({
         open={open}
       >
         <DrawerHeader>
-          <Typography>{currentUser.email}</Typography>
           <IconButton onClick={handleDrawerClose} sx={{ ml: 3 }}>
             {theme.direction === 'ltr' ? (
-              <ChevronLeftIcon />
+              <ChevronLeftIcon fontSize="large" />
             ) : (
               <ChevronRightIcon />
             )}
@@ -163,7 +162,10 @@ export default function PersistentDrawerLeft({
             <ListItem
               key={text.list}
               onClick={currentList}
-              // sx={{ '& .active': { backgroundColor: 'rgb(183, 246, 250)' } }}
+              sx={{
+                backgroundColor:
+                  getCurrentList.list === text.list ? 'rgb(183, 246, 250)' : '',
+              }}
               disablePadding
             >
               <ListItemButton>

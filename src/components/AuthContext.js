@@ -1,6 +1,7 @@
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
+  signInAnonymously,
   signInWithEmailAndPassword,
   signOut,
 } from 'firebase/auth';
@@ -37,11 +38,16 @@ export const AuthProvider = ({ children }) => {
     return signOut(auth);
   };
 
+  const logInAnonymously = () => {
+    return signInAnonymously(auth);
+  };
+
   const value = {
     currentUser,
     signup,
     login,
     logout,
+    logInAnonymously,
   };
   return (
     <AuthContext.Provider value={value}>

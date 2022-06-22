@@ -7,7 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login } = useAuth();
+  const { login, logInAnonymously } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -19,6 +19,21 @@ const Login = () => {
       setError('');
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
+      navigate('/');
+    } catch (error) {
+      setError('Failed to log in');
+      console.log(error);
+    }
+    setLoading(false);
+  };
+
+  const handleAnon = async (e) => {
+    e.preventDefault();
+    console.log('logInAnonymously');
+    try {
+      setError('');
+      setLoading(true);
+      await logInAnonymously();
       navigate('/');
     } catch (error) {
       setError('Failed to log in');
@@ -50,6 +65,14 @@ const Login = () => {
                 Log In
               </Button>
             </Form>
+            <Button
+              onClick={handleAnon}
+              disabled={loading}
+              type="submit"
+              className="w-100 mt-3"
+            >
+              Log In Anonymously
+            </Button>
           </Card.Body>
         </Card>
         <div className="w-100 text-center mt-2">

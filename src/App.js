@@ -1,12 +1,10 @@
 import React from 'react';
 import Signup from './components/Signup';
-import { Container } from 'react-bootstrap';
 import { AuthProvider } from './components/AuthContext';
 import { HashRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/Login';
 import PrivateRoute from './components/PrivateRoute';
 import Dashboard from './components/Dashboard';
-import { useAuth } from './components/AuthContext';
 
 const App = () => {
   return (

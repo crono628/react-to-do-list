@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 
-import * as React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
@@ -20,9 +20,9 @@ import DialogTitle from '@mui/material/DialogTitle';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
-export default function AddTask({ currentList, choice }) {
-  const [open, setOpen] = React.useState(false);
-  const [title, setTitle] = React.useState('');
+export default function AddTask({ currentList }) {
+  const [open, setOpen] = useState(false);
+  const [title, setTitle] = useState('');
   const { currentUser } = useAuth();
 
   const handleSubmit = async (e) => {
@@ -32,6 +32,7 @@ export default function AddTask({ currentList, choice }) {
         title: title,
         completed: false,
         list: currentList.list,
+        timestamp: Date.now(),
       });
     } catch (e) {
       console.log(e);

@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { styled, useTheme } from '@mui/material/styles';
+import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
-import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -16,61 +15,17 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import LogoutIcon from '@mui/icons-material/Logout';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 import { useAuth } from './AuthContext';
 import { useNavigate } from 'react-router-dom';
-import { Button, Container } from '@mui/material';
+import { Button } from '@mui/material';
 import AddList from './AddList';
 import AddTask from './AddTask';
 import Item from './Item';
 import ConfirmDelete from './ConfirmDelete';
-
-const drawerWidth = 180;
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  })
-);
-
-const AppBar = styled(MuiAppBar, {
-  shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
-  transition: theme.transitions.create(['margin', 'width'], {
-    easing: theme.transitions.easing.sharp,
-    duration: theme.transitions.duration.leavingScreen,
-  }),
-  ...(open && {
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: `${drawerWidth}px`,
-    transition: theme.transitions.create(['margin', 'width'], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  }),
-}));
-
-const DrawerHeader = styled('div')(({ theme }) => ({
-  display: 'flex',
-  alignItems: 'center',
-  padding: theme.spacing(0, 1),
-  // necessary for content to be below app bar
-  ...theme.mixins.toolbar,
-  justifyContent: 'flex-end',
-}));
+import { useState } from 'react';
+import { DrawerHeader, Main, AppBar, drawerWidth } from '../helpers/helpers';
 
 export default function PersistentDrawerLeft({
   lists,
@@ -81,8 +36,9 @@ export default function PersistentDrawerLeft({
 }) {
   const theme = useTheme();
   const navigate = useNavigate();
-  const { currentUser, logout } = useAuth();
-  const [open, setOpen] = React.useState(false);
+  const { logout } = useAuth();
+  const [open, setOpen] = useState(false);
+  const [ascending, setAscending] = useState(true);
 
   const handleLogout = async () => {
     try {
@@ -158,7 +114,7 @@ export default function PersistentDrawerLeft({
 
         <Divider />
         <List sx={{ height: '100%', overflowY: 'scroll' }}>
-          {lists.map((text, index) => (
+          {lists.map((text) => (
             <ListItem
               disablePadding
               key={text.list}
@@ -212,17 +168,37 @@ export default function PersistentDrawerLeft({
           >
             <AddTask currentList={getCurrentList ? getCurrentList : ''} />
           </List>
+          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <IconButton onClick={() => setAscending((prev) => !prev)}>
+              <Typography mr={2}>
+                {ascending ? 'Oldest first' : 'Newest first'}
+              </Typography>
+              <FilterListIcon />
+            </IconButton>
+          </div>
           {todos
             .filter((data) => data.list === getCurrentList.list)
+            .sort((a, b) => {
+              if (ascending) {
+                if (a.timestamp > b.timestamp) {
+                  return 1;
+                }
+                if (a.timestamp < b.timestamp) {
+                  return -1;
+                }
+                return 0;
+              } else {
+                if (a.timestamp < b.timestamp) {
+                  return 1;
+                }
+                if (a.timestamp > b.timestamp) {
+                  return -1;
+                }
+                return 0;
+              }
+            })
             .map((item, index) => {
-              return (
-                <Item
-                  // handleComplete={handleComplete}
-                  key={item.id}
-                  todo={item}
-                  index={index}
-                />
-              );
+              return <Item key={item.id} todo={item} index={index} />;
             })}
         </>
       </Main>

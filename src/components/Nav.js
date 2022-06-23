@@ -168,14 +168,16 @@ export default function PersistentDrawerLeft({
           >
             <AddTask currentList={getCurrentList ? getCurrentList : ''} />
           </List>
-          <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <IconButton onClick={() => setAscending((prev) => !prev)}>
-              <Typography mr={2}>
-                {ascending ? 'Oldest first' : 'Newest first'}
-              </Typography>
-              <FilterListIcon />
-            </IconButton>
-          </div>
+          {getCurrentList ? (
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <IconButton onClick={() => setAscending((prev) => !prev)}>
+                <Typography mr={2}>
+                  {ascending ? 'Oldest first' : 'Newest first'}
+                </Typography>
+                <FilterListIcon />
+              </IconButton>
+            </div>
+          ) : null}
           {todos
             .filter((data) => data.list === getCurrentList.list)
             .sort((a, b) => {

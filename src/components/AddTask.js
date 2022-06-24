@@ -1,14 +1,7 @@
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { useAuth } from './AuthContext';
-import {
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from '@mui/material';
-
+import { Typography } from '@mui/material';
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -19,6 +12,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import PlaylistAddIcon from '@mui/icons-material/PlaylistAdd';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import { Box } from '@mui/system';
 
 export default function AddTask({ currentList }) {
   const [open, setOpen] = useState(false);
@@ -51,14 +45,20 @@ export default function AddTask({ currentList }) {
   return (
     <>
       {currentList ? (
-        <ListItem disablePadding>
-          <ListItemButton onClick={handleClickOpen}>
-            <ListItemText primary="Add Task" />
-            <ListItemIcon>
-              <PlaylistAddIcon sx={{ ml: 2 }} />
-            </ListItemIcon>
-          </ListItemButton>
-        </ListItem>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
+        >
+          <Button
+            sx={{ color: 'black' }}
+            onClick={handleClickOpen}
+            endIcon={<PlaylistAddIcon />}
+          >
+            Add Task
+          </Button>
+        </Box>
       ) : (
         <Typography variant="h6">
           <ArrowUpwardIcon /> Use the menu to choose a list

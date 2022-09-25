@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 const Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login, logInAnonymously } = useAuth();
+  const { login, loginAnonymously } = useAuth();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -31,7 +31,7 @@ const Login = () => {
     try {
       setError('');
       setLoading(true);
-      await logInAnonymously();
+      await loginAnonymously();
       navigate('/');
     } catch (error) {
       setError('Failed to log in');

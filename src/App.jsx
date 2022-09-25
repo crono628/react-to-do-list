@@ -1,34 +1,28 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import React from 'react';
+import './App.css';
+import { AuthProvider } from './Context';
+import { HashRouter, Routes, Route } from 'react-router-dom';
+import Login from './components/Login/Login';
+import PrivateRoute from './components/PrivateRoute';
+import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <div>
+      <HashRouter>
+        <AuthProvider>
+          <Routes>
+            <Route path="/react-to-do-list" element={<Login />} />
+            {/* <Route path="/signup" element={<Signup />} /> */}
+            <Route path="/login" element={<Login />} />
+            <Route exact path="/" element={<PrivateRoute />}>
+              <Route exact path="/" element={<Dashboard />} />
+            </Route>
+          </Routes>
+        </AuthProvider>
+      </HashRouter>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

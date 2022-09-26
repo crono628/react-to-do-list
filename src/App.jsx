@@ -8,7 +8,7 @@ import Dashboard from './components/Dashboard/Dashboard';
 
 function App() {
   return (
-    <div>
+    <div className="app">
       <HashRouter>
         <AuthProvider>
           <Routes>

@@ -1,0 +1,17 @@
+.app {
+  height: 100vh;
+  background-color: lightsteelblue;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+@media screen and (min-width: 768px) {
+  .app {
+    background-color: red;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .app {
+    background-color: blue;
+  }
+}

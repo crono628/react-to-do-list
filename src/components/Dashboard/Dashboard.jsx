@@ -10,6 +10,7 @@ import {
 } from 'firebase/firestore';
 import { useAuth } from '../../Context';
 import Navigation from '../Navigation/Navigation';
+import styled from 'styled-components';
 
 const Dashboard = () => {
   const [currentList, setCurrentList] = useState('');
@@ -76,7 +77,9 @@ const Dashboard = () => {
         todos={todos}
         handleDeleteList={handleDeleteList}
       />
-      dashboard
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus, ab illum!
+      Quae odit impedit consequuntur dolorum sapiente quia, dicta incidunt
+      quaerat quis eveniet perferendis nulla eaque ipsam ullam ab veritatis.
     </>
   );
 };
